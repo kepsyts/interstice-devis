@@ -3,270 +3,81 @@
 <head>
 <meta charset="UTF-8">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,600;0,700;0,800;0,900;1,400&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap');
 
   :root {
-    --rouge: #cc0000;
-    --rouge-dark: #990000;
-    --noir: #111111;
-    --gris: #888888;
-    --gris-light: #f4f4f4;
+    --primary: {{ theme_primary }};
+    --primary-dark: {{ theme_primary_dark }};
+    --on-primary: {{ theme_on_primary }};
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Montserrat', sans-serif; background: #fff; color: var(--noir); }
-
+  body { font-family: 'Montserrat', sans-serif; background: #fff; color: #111; }
   @page { size: A4; margin: 0; }
 
-  /* ── Bande rouge gauche ── */
-  .stripe {
-    position: fixed;
-    top: 0; left: 0; bottom: 0;
-    width: 8mm;
-    background: var(--rouge);
-    z-index: 10;
-  }
+  .watermark { position: fixed; bottom: 20mm; right: -10mm; width: 120mm; opacity: 0.04; z-index: 0; }
 
-  /* ── Watermark ── */
-  .watermark {
-    position: fixed;
-    bottom: 20mm;
-    right: -10mm;
-    width: 120mm;
-    opacity: 0.04;
-    z-index: 0;
-  }
+  .page { padding: 16mm 16mm 20mm 16mm; position: relative; z-index: 1; }
 
-  /* ── Page ── */
-  .page {
-    margin-left: 8mm;
-    padding: 16mm 16mm 20mm 18mm;
-    position: relative;
-    z-index: 1;
-  }
+  /* Header */
+  .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10mm; padding-bottom: 7mm; border-bottom: 0.3mm solid #e0e0e0; }
+  .doc-intitule { font-size: 52px; font-weight: 900; color: var(--primary); letter-spacing: -2px; line-height: 1; text-transform: uppercase; }
+  .doc-sub { font-size: 8px; font-weight: 600; color: #aaa; text-transform: uppercase; letter-spacing: 3px; margin-top: 2mm; }
+  .header-right { text-align: right; }
+  .doc-num-big { font-size: 13px; font-weight: 900; color: #111; letter-spacing: 1px; }
+  .doc-date { font-size: 9px; font-weight: 500; color: #888; margin-top: 1.5mm; line-height: 1.9; }
+  .doc-date span { color: #111; font-weight: 700; }
 
-  /* ── Header ── */
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 12mm;
-    padding-bottom: 8mm;
-    border-bottom: 0.3mm solid #e0e0e0;
-  }
-  .header-left {}
-  .doc-intitule {
-    font-size: 52px;
-    font-weight: 900;
-    color: var(--rouge);
-    letter-spacing: -2px;
-    line-height: 1;
-    text-transform: uppercase;
-  }
-  .doc-sub {
-    font-size: 9px;
-    font-weight: 600;
-    color: var(--gris);
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    margin-top: 2mm;
-  }
-  .header-right {
-    text-align: right;
-  }
-  .doc-num-big {
-    font-size: 13px;
-    font-weight: 900;
-    color: var(--noir);
-    letter-spacing: 1px;
-  }
-  .doc-date {
-    font-size: 9px;
-    font-weight: 600;
-    color: var(--gris);
-    margin-top: 1.5mm;
-    line-height: 1.8;
-  }
-  .doc-date span { color: var(--noir); font-weight: 700; }
+  /* Adresses */
+  .addresses { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16mm; margin-bottom: 10mm; }
+  .addr-tag { font-size: 7px; font-weight: 900; text-transform: uppercase; letter-spacing: 2.5px; color: var(--primary); margin-bottom: 2mm; display: block; }
+  .addr-name { font-size: 13px; font-weight: 900; color: #111; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2mm; }
+  .addr-body { font-size: 9px; font-weight: 500; color: #555; line-height: 2; }
 
-  /* ── Adresses ── */
-  .addresses {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0 16mm;
-    margin-bottom: 10mm;
-  }
-  .addr-block {}
-  .addr-tag {
-    font-size: 7px;
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: 2.5px;
-    color: var(--rouge);
-    margin-bottom: 2.5mm;
-    display: block;
-  }
-  .addr-name {
-    font-size: 13px;
-    font-weight: 900;
-    color: var(--noir);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 2mm;
-  }
-  .addr-body {
-    font-size: 9px;
-    font-weight: 500;
-    color: #555;
-    line-height: 2;
-  }
+  /* Objet */
+  .objet { background: #f5f5f5; border-left: 3px solid var(--primary); padding: 3mm 5mm; font-size: 10px; font-weight: 700; color: var(--primary); font-style: italic; margin-bottom: 8mm; }
 
-  /* ── Objet ── */
-  .objet {
-    background: var(--gris-light);
-    border-left: 3px solid var(--rouge);
-    padding: 3mm 5mm;
-    font-size: 10px;
-    font-weight: 700;
-    color: var(--rouge);
-    font-style: italic;
-    margin-bottom: 8mm;
-  }
-
-  /* ── Tableau ── */
+  /* Tableau */
   table { width: 100%; border-collapse: collapse; margin-bottom: 8mm; }
-
-  thead tr { background: var(--noir); }
-  thead th {
-    font-size: 7px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    padding: 4mm 3.5mm;
-    color: #fff;
-    text-align: left;
-  }
+  thead tr { background: var(--primary); }
+  thead th { font-size: 7px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; padding: 4mm 3.5mm; color: var(--on-primary); text-align: left; }
   thead th.center { text-align: center; }
   thead th.right { text-align: right; }
-
   tbody tr { border-bottom: 0.2mm solid #eeeeee; }
-  tbody tr:last-child { border-bottom: 0.5mm solid var(--noir); }
-
-  tbody td {
-    padding: 5mm 3.5mm;
-    vertical-align: top;
-    font-size: 9.5px;
-    font-weight: 600;
-    color: #333;
-  }
+  tbody tr:last-child { border-bottom: 0.5mm solid #222; }
+  tbody td { padding: 5mm 3.5mm; vertical-align: top; font-size: 9.5px; font-weight: 600; color: #333; }
   tbody td.center { text-align: center; }
   tbody td.right { text-align: right; white-space: nowrap; font-weight: 700; }
 
-  .prestation-title {
-    font-weight: 900;
-    font-size: 11px;
-    color: var(--rouge);
-    text-transform: uppercase;
-    display: block;
-    margin-bottom: 2mm;
-    letter-spacing: 0.5px;
-  }
+  .prestation-title { font-weight: 900; font-size: 11px; color: var(--primary); text-transform: uppercase; display: block; margin-bottom: 2mm; letter-spacing: 0.5px; }
   .item-inclus { font-size: 8.5px; font-weight: 500; color: #777; line-height: 1.9; }
-  .item-offert { font-size: 8.5px; font-weight: 800; color: var(--rouge); line-height: 1.9; }
-  .badge-offert { color: var(--rouge); font-weight: 900; font-size: 9px; letter-spacing: 1px; }
+  .item-offert { font-size: 8.5px; font-weight: 800; color: var(--primary); line-height: 1.9; }
+  .badge-offert { color: var(--primary); font-weight: 900; font-size: 9px; letter-spacing: 1px; }
 
-  /* ── Totaux ── */
-  .totals-wrap {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 10mm;
-  }
-  .totals {
-    width: 90mm;
-  }
-  .total-line {
-    display: flex;
-    justify-content: space-between;
-    font-size: 10px;
-    font-weight: 600;
-    color: #666;
-    padding: 1.5mm 0;
-    border-bottom: 0.2mm solid #f0f0f0;
-  }
+  /* Totaux */
+  .totals-wrap { display: flex; justify-content: flex-end; margin-bottom: 10mm; }
+  .totals { width: 90mm; }
+  .total-line { display: flex; justify-content: space-between; font-size: 10px; font-weight: 600; color: #666; padding: 1.5mm 0; border-bottom: 0.2mm solid #f0f0f0; }
   .total-line span:last-child { font-weight: 700; color: #222; }
-  .total-ttc {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: var(--noir);
-    padding: 4mm 5mm;
-    margin-top: 2mm;
-  }
-  .ttc-label {
-    font-size: 10px;
-    font-weight: 900;
-    color: #fff;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-  }
-  .ttc-val {
-    font-size: 16px;
-    font-weight: 900;
-    color: var(--rouge);
-    letter-spacing: -0.5px;
-  }
+  .total-ttc { display: flex; justify-content: space-between; align-items: center; background: var(--primary); padding: 4mm 5mm; margin-top: 2mm; }
+  .ttc-label { font-size: 10px; font-weight: 900; color: var(--on-primary); text-transform: uppercase; letter-spacing: 2px; }
+  .ttc-val { font-size: 16px; font-weight: 900; color: var(--on-primary); letter-spacing: -0.5px; }
 
-  /* ── Conditions ── */
-  .conditions {
-    padding-top: 5mm;
-    border-top: 0.2mm solid #e0e0e0;
-  }
-  .cond-title {
-    font-size: 7px;
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: var(--gris);
-    margin-bottom: 2mm;
-  }
-  .conditions p {
-    font-size: 8px;
-    font-weight: 500;
-    color: #999;
-    line-height: 1.8;
-    margin-bottom: 1mm;
-  }
+  /* Conditions */
+  .conditions { padding-top: 5mm; border-top: 0.2mm solid #e0e0e0; }
+  .cond-title { font-size: 7px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; color: #aaa; margin-bottom: 2mm; }
+  .conditions p { font-size: 8px; font-weight: 500; color: #999; line-height: 1.8; margin-bottom: 1mm; }
 
-  /* ── Footer ── */
-  .footer {
-    position: fixed;
-    bottom: 0; left: 8mm; right: 0;
-    height: 10mm;
-    background: var(--rouge);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 16mm 0 18mm;
-  }
-  .footer span {
-    font-size: 7px;
-    font-weight: 700;
-    color: rgba(255,255,255,0.7);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-  .footer span:last-child { color: #fff; font-weight: 900; }
+  /* Footer */
+  .footer { position: fixed; bottom: 0; left: 0; right: 0; height: 10mm; background: var(--primary); display: flex; align-items: center; justify-content: space-between; padding: 0 16mm; }
+  .footer span { font-size: 7px; font-weight: 700; color: rgba(255,255,255,0.65); text-transform: uppercase; letter-spacing: 1px; }
+  .footer span:last-child { color: var(--on-primary); font-weight: 900; }
 </style>
 </head>
 <body>
 
-<!-- Bande rouge gauche -->
-<div class="stripe"></div>
-
-<!-- Watermark -->
 <img class="watermark" src="https://static.wixstatic.com/media/02d2d0_3e7c25002e0d4cfc95e2ec69c8781a9d~mv2.png" alt="">
 
-<!-- Footer rouge bas -->
 <div class="footer">
   <span>{{ emt.footer }}</span>
   <span>{{ num }}</span>
@@ -274,9 +85,8 @@
 
 <div class="page">
 
-  <!-- Header -->
   <div class="header">
-    <div class="header-left">
+    <div>
       <div class="doc-intitule">{{ intitule }}</div>
       <div class="doc-sub">Interstice Productions &mdash; Document commercial</div>
     </div>
@@ -289,20 +99,13 @@
     </div>
   </div>
 
-  <!-- Adresses -->
   <div class="addresses">
-    <div class="addr-block">
+    <div>
       <span class="addr-tag">De</span>
       <div class="addr-name">{{ emt.nom }}</div>
-      <div class="addr-body">
-        {{ emt.adresse }}<br>
-        {{ emt.ville }}<br>
-        {{ emt.email }}<br>
-        SIRET {{ emt.siret }}<br>
-        TVA {{ emt.tva }}
-      </div>
+      <div class="addr-body">{{ emt.adresse }}<br>{{ emt.ville }}<br>{{ emt.email }}<br>SIRET {{ emt.siret }}<br>TVA {{ emt.tva }}</div>
     </div>
-    <div class="addr-block">
+    <div>
       <span class="addr-tag">À l'attention de</span>
       <div class="addr-name">{{ client.nom }}</div>
       <div class="addr-body">
@@ -316,10 +119,8 @@
     </div>
   </div>
 
-  <!-- Objet -->
   {% if message %}<div class="objet">{{ message }}</div>{% endif %}
 
-  <!-- Tableau -->
   <table>
     <thead>
       <tr>
@@ -350,7 +151,6 @@
     </tbody>
   </table>
 
-  <!-- Totaux -->
   <div class="totals-wrap">
     <div class="totals">
       <div class="total-line"><span>Sous-total HT</span><span>{{ total_ht }}</span></div>
@@ -362,7 +162,6 @@
     </div>
   </div>
 
-  <!-- Conditions -->
   <div class="conditions">
     <div class="cond-title">Conditions commerciales</div>
     {% if conds.acompte %}<p>{{ conds.acompte }}</p>{% endif %}
