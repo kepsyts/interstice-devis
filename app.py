@@ -3,9 +3,24 @@ from weasyprint import HTML, CSS
 from weasyprint.text.fonts import FontConfiguration
 import io
 import json
+import base64
+import urllib.request
 from datetime import datetime, timedelta
 
 app = Flask(__name__)
+
+def get_watermark_b64(url):
+    """Télécharge une image et la convertit en base64 pour SVG inline"""
+    try:
+        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+        with urllib.request.urlopen(req, timeout=5) as r:
+            data = r.read()
+        ext = url.split('.')[-1].split('~')[0].lower()
+        mime = 'image/png' if ext == 'png' else 'image/jpeg'
+        b64 = base64.b64encode(data).decode('utf-8')
+        return f"data:{mime};base64,{b64}"
+    except:
+        return None
 
 # ── Route principale — sert le formulaire ──
 @app.route('/')
@@ -69,12 +84,14 @@ def generate_pdf():
             theme_primary      = '#111111'
             theme_primary_dark = '#000000'
             theme_on_primary   = '#ffffff'
-            watermark_url      = 'https://static.wixstatic.com/media/02d2d0_579c0b2eaafd43818a6d51e8eadee53e~mv2.png'
+            wm_url = 'https://static.wixstatic.com/media/02d2d0_579c0b2eaafd43818a6d51e8eadee53e~mv2.png'
         else:
             theme_primary      = '#cc0000'
             theme_primary_dark = '#990000'
             theme_on_primary   = '#ffffff'
-            watermark_url      = 'https://static.wixstatic.com/media/02d2d0_3e7c25002e0d4cfc95e2ec69c8781a9d~mv2.png'
+            wm_url = 'https://static.wixstatic.com/media/02d2d0_3e7c25002e0d4cfc95e2ec69c8781a9d~mv2.png'
+
+        wm_b64 = get_watermark_b64(wm_url)
 
         # Contexte pour le template
         context = {
@@ -93,7 +110,7 @@ def generate_pdf():
             'theme_primary': theme_primary,
             'theme_primary_dark': theme_primary_dark,
             'theme_on_primary': theme_on_primary,
-            'watermark_url': watermark_url,
+            'watermark_b64': wm_b64,
         }
 
         # Générer le HTML du devis
