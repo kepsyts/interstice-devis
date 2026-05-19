@@ -63,6 +63,17 @@ def generate_pdf():
         if not conds.get('assurance'):
             conds['assurance'] = "L'activité est couverte par une assurance Responsabilité Civile Professionnelle auprès d'ORUS."
 
+        # Thème couleur
+        theme = data.get('theme', 'rouge')
+        if theme == 'noir':
+            theme_primary      = '#111111'
+            theme_primary_dark = '#000000'
+            theme_on_primary   = '#ffffff'
+        else:
+            theme_primary      = '#cc0000'
+            theme_primary_dark = '#990000'
+            theme_on_primary   = '#ffffff'
+
         # Contexte pour le template
         context = {
             'intitule': data.get('intitule', 'Devis'),
@@ -77,6 +88,9 @@ def generate_pdf():
             'total_ttc': fmt(total_ttc),
             'emt': emt,
             'conds': conds,
+            'theme_primary': theme_primary,
+            'theme_primary_dark': theme_primary_dark,
+            'theme_on_primary': theme_on_primary,
         }
 
         # Générer le HTML du devis
