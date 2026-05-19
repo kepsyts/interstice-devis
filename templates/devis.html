@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap');
+
+  :root { --rouge: #cc0000; }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    background: #fff;
+    color: #222;
+    font-size: 10.5px;
+  }
+
+  .page {
+    width: 210mm;
+    min-height: 297mm;
+    padding: 18mm 18mm 16mm;
+    position: relative;
+    background: #fff;
+  }
+
+  /* ── Watermark ── */
+  .watermark {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-42%, -50%) rotate(-90deg);
+    height: 88%;
+    opacity: 0.06;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .content { position: relative; z-index: 1; }
+
+  /* ── Numéro devis ── */
+  .doc-num {
+    font-size: 44px;
+    font-weight: 900;
+    color: var(--rouge);
+    letter-spacing: -1px;
+    margin-bottom: 10mm;
+    line-height: 1;
+  }
+
+  /* ── Méta ── */
+  .meta-grid {
+    display: grid;
+    grid-template-columns: 48mm 1fr;
+    gap: 1mm 0;
+    margin-bottom: 10mm;
+    font-size: 9.5px;
+  }
+  .meta-label { font-weight: 900; color: var(--rouge); }
+  .meta-val   { font-weight: 600; color: #222; }
+
+  /* ── Adresses ── */
+  .addresses {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 12mm;
+    margin-bottom: 10mm;
+  }
+  .addr-name {
+    font-weight: 900;
+    font-size: 9.5px;
+    color: var(--rouge);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 2.5mm;
+  }
+  .addr-body {
+    font-size: 9px;
+    font-weight: 700;
+    color: #222;
+    line-height: 1.85;
+  }
+
+  /* ── Objet ── */
+  .objet {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--rouge);
+    font-style: italic;
+    margin-bottom: 5mm;
+    padding-bottom: 2.5mm;
+    border-bottom: 0.5mm solid var(--rouge);
+  }
+
+  /* ── Tableau ── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 7mm;
+  }
+
+  thead tr { background: var(--rouge); }
+  thead th {
+    font-size: 8px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    padding: 3mm 3mm;
+    color: #fff;
+    text-align: left;
+  }
+  thead th.center { text-align: center; }
+  thead th.right  { text-align: right; }
+
+  tbody tr { border-bottom: 0.3mm solid #e8e8e8; }
+  tbody tr:nth-child(even) { background: #fafafa; }
+
+  tbody td {
+    padding: 4mm 3mm;
+    vertical-align: top;
+    font-size: 9px;
+    font-weight: 700;
+    color: #222;
+  }
+  tbody td.center { text-align: center; }
+  tbody td.right  { text-align: right; white-space: nowrap; }
+
+  .prestation-title {
+    font-weight: 900;
+    font-size: 9px;
+    color: var(--rouge);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 2mm;
+    letter-spacing: 0.3px;
+  }
+
+  .item-inclus {
+    font-size: 8px;
+    font-weight: 700;
+    color: #555;
+    line-height: 1.8;
+  }
+  .item-offert {
+    font-size: 8px;
+    font-weight: 800;
+    color: var(--rouge);
+    line-height: 1.8;
+  }
+
+  .badge-offert {
+    color: var(--rouge);
+    font-weight: 900;
+    font-size: 8.5px;
+  }
+
+  /* ── Totaux ── */
+  .totals {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 1.5mm;
+    margin-bottom: 12mm;
+  }
+  .total-line {
+    display: flex;
+    justify-content: space-between;
+    width: 80mm;
+    font-size: 10px;
+    font-weight: 600;
+    color: #555;
+  }
+  .total-line span:last-child { font-weight: 700; }
+
+  .total-ttc {
+    display: flex;
+    width: 80mm;
+    margin-top: 2.5mm;
+  }
+  .ttc-label, .ttc-val {
+    background: var(--rouge);
+    color: #fff;
+    font-weight: 800;
+    font-size: 11px;
+    padding: 3mm 4mm;
+  }
+  .ttc-label { flex: 1; }
+  .ttc-val   { text-align: right; min-width: 28mm; }
+
+  /* ── Conditions ── */
+  .conditions {
+    border-top: 0.3mm solid #ddd;
+    padding-top: 4mm;
+    margin-bottom: 4mm;
+  }
+  .conditions p {
+    font-size: 7.5px;
+    font-weight: 700;
+    color: #666;
+    line-height: 1.75;
+    margin-bottom: 1.5mm;
+  }
+
+  /* ── Footer ── */
+  .footer {
+    position: fixed;
+    bottom: 8mm;
+    left: 18mm;
+    right: 18mm;
+    border-top: 0.3mm solid #ddd;
+    padding-top: 2.5mm;
+    font-size: 7px;
+    font-weight: 600;
+    color: #999;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /* ── Sauts de page ── */
+  @page {
+    size: A4;
+    margin: 0;
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <img class="watermark"
+       src="https://static.wixstatic.com/media/02d2d0_79b4539bee614061a13a76de2856c0ae~mv2.png"
+       alt="">
+
+  <div class="content">
+
+    <!-- Numéro -->
+    <div class="doc-num">{{ intitule }}</div>
+
+    <!-- Méta -->
+    <div class="meta-grid">
+      <span class="meta-label">Numéro de devis</span><span class="meta-val">{{ num }}</span>
+      <span class="meta-label">Date d'émission</span><span class="meta-val">{{ date_fr }}</span>
+      <span class="meta-label">Date d'expiration</span><span class="meta-val">{{ date_exp }}</span>
+    </div>
+
+    <!-- Adresses -->
+    <div class="addresses">
+      <div>
+        <div class="addr-name">{{ emt.nom }}</div>
+        <div class="addr-body">
+          {{ emt.adresse }}<br>
+          {{ emt.ville }}<br>
+          {{ emt.email }}<br>
+          {{ emt.siret }}<br>
+          N° TVA : {{ emt.tva }}
+        </div>
+      </div>
+      <div>
+        <div class="addr-name">{{ client.nom }}</div>
+        <div class="addr-body">
+          {% if client.adresse %}{{ client.adresse }}<br>{% endif %}
+          {% if client.ville %}{{ client.ville }}<br>{% endif %}
+          {% if client.email %}{{ client.email }}<br>{% endif %}
+          {% if client.tel %}{{ client.tel }}<br>{% endif %}
+          {% if client.siret %}SIRET : {{ client.siret }}<br>{% endif %}
+          {% if client.tva %}N° TVA : {{ client.tva }}{% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Objet -->
+    {% if message %}
+    <div class="objet">{{ message }}</div>
+    {% endif %}
+
+    <!-- Tableau prestations -->
+    <table>
+      <thead>
+        <tr>
+          <th style="width:44%">Description</th>
+          <th class="center" style="width:10%">Qté</th>
+          <th class="center" style="width:16%">Prix unitaire</th>
+          <th class="center" style="width:9%">TVA</th>
+          <th class="right"  style="width:21%">Total HT</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for l in lignes %}
+        <tr>
+          <td>
+            <span class="prestation-title">{{ l.desc }}</span>
+            {% for item in l.inclus %}
+            <div class="item-inclus">— {{ item }}</div>
+            {% endfor %}
+            {% for item in l.offerts %}
+            <div class="item-offert">❖ {{ item }}</div>
+            {% endfor %}
+          </td>
+          <td class="center">{{ l.qte }} unité{% if l.qte > 1 %}s{% endif %}</td>
+          <td class="center">
+            {% if l.gratuit or not l.pu %}—{% else %}{{ "%.2f"|format(l.pu|float) }} €{% endif %}
+          </td>
+          <td class="center">
+            {% if l.gratuit or not l.pu %}—{% else %}20%{% endif %}
+          </td>
+          <td class="right">
+            {% if l.gratuit or not l.pu %}
+              <span class="badge-offert">OFFERT</span>
+            {% else %}
+              {{ "%.2f"|format((l.qte|float) * (l.pu|float)) }} €
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <!-- Totaux -->
+    <div class="totals">
+      <div class="total-line">
+        <span>Total HT</span>
+        <span>{{ total_ht }}</span>
+      </div>
+      <div class="total-line">
+        <span>Montant total de la TVA</span>
+        <span>{{ total_tva }}</span>
+      </div>
+      <div class="total-ttc">
+        <span class="ttc-label">Total TTC</span>
+        <span class="ttc-val">{{ total_ttc }}</span>
+      </div>
+    </div>
+
+    <!-- Conditions -->
+    <div class="conditions">
+      {% if conds.acompte %}<p>{{ conds.acompte }}</p>{% endif %}
+      {% if conds.sauvegarde %}<p>{{ conds.sauvegarde }}</p>{% endif %}
+      {% if conds.droits %}<p>{{ conds.droits }}</p>{% endif %}
+      {% if conds.assurance %}<p>{{ conds.assurance }}</p>{% endif %}
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /page -->
+
+<!-- Footer fixe sur chaque page -->
+<div class="footer">
+  <span>{{ emt.footer }}</span>
+  <span>{{ num }}</span>
+</div>
+
+</body>
+</html>
