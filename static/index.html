@@ -137,6 +137,11 @@ body{font-family:'Montserrat',sans-serif;background:#050505;color:var(--blanc);m
 
 /* NOTIF */
 .notif{position:fixed;bottom:28px;right:28px;background:var(--rouge);color:var(--blanc);padding:11px 20px;font-size:11px;font-weight:800;letter-spacing:.08em;display:none;z-index:999;text-transform:uppercase;}
+.theme-selector{display:flex;gap:8px;margin-bottom:16px;}
+.theme-btn{display:flex;align-items:center;gap:8px;padding:10px 16px;border:1px solid #1e1e1e;background:#0d0d0d;cursor:pointer;font-family:'Montserrat',sans-serif;font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#555;transition:all .15s;}
+.theme-btn:hover{border-color:#333;color:#bbb;}
+.theme-btn.active{border-color:var(--rouge);color:#fff;}
+.theme-dot{width:14px;height:14px;border-radius:50%;flex-shrink:0;}
 </style>
 </head>
 <body>
@@ -232,6 +237,14 @@ body{font-family:'Montserrat',sans-serif;background:#050505;color:var(--blanc);m
   </div>
 
   <div class="btn-row">
+    <div class="theme-selector">
+      <button class="theme-btn active" id="btn-rouge" onclick="setTheme('rouge')">
+        <span class="theme-dot" style="background:#cc0000;"></span> Rouge
+      </button>
+      <button class="theme-btn" id="btn-noir" onclick="setTheme('noir')">
+        <span class="theme-dot" style="background:#111;border:1px solid #444;"></span> Noir
+      </button>
+    </div>
     <button class="btn btn-rouge" onclick="exporterPDF()">⬇ Exporter PDF</button>
     <button class="btn btn-outline" onclick="sauvegarderDevis()">💾 Sauvegarder</button>
     <button class="btn btn-outline" onclick="resetForm()">Effacer</button>
@@ -815,6 +828,16 @@ function resetForm(){
 
 
 // =====================================================================
+// THÈME
+// =====================================================================
+let currentTheme = 'rouge';
+function setTheme(t){
+  currentTheme = t;
+  document.querySelectorAll('.theme-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('btn-'+t).classList.add('active');
+}
+
+// =====================================================================
 // PDF — Envoi au serveur Python Flask
 // =====================================================================
 async function exporterPDF(){
@@ -827,7 +850,7 @@ async function exporterPDF(){
   const emt = getData('ip_emetteur', {});
   const conds = getData('ip_conditions', {});
 
-  const payload = { ...d, emetteur: emt, conditions: conds };
+  const payload = { ...d, emetteur: emt, conditions: conds, theme: currentTheme };
 
   notif('Génération PDF...');
 
