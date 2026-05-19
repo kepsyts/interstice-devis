@@ -76,7 +76,21 @@
 </head>
 <body>
 
-<div class="wm-wrap"><img class="watermark" src="{{ watermark_url }}" alt=""></div>
+{% if watermark_b64 %}
+<div class="wm-wrap">
+  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+       width="210mm" height="297mm"
+       viewBox="0 0 595 842"
+       style="position:fixed;top:0;left:0;">
+    <image xlink:href="{{ watermark_b64 }}"
+           x="-30" y="200"
+           width="580" height="580"
+           opacity="0.055"
+           transform="rotate(-45, 297, 421)"
+           preserveAspectRatio="xMidYMid meet"/>
+  </svg>
+</div>
+{% endif %}
 
 <div class="footer">
   <span>{{ emt.footer }}</span>
