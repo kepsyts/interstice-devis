@@ -69,10 +69,12 @@ def generate_pdf():
             theme_primary      = '#111111'
             theme_primary_dark = '#000000'
             theme_on_primary   = '#ffffff'
+            watermark_url      = 'https://static.wixstatic.com/media/02d2d0_579c0b2eaafd43818a6d51e8eadee53e~mv2.png'
         else:
             theme_primary      = '#cc0000'
             theme_primary_dark = '#990000'
             theme_on_primary   = '#ffffff'
+            watermark_url      = 'https://static.wixstatic.com/media/02d2d0_3e7c25002e0d4cfc95e2ec69c8781a9d~mv2.png'
 
         # Contexte pour le template
         context = {
@@ -91,6 +93,7 @@ def generate_pdf():
             'theme_primary': theme_primary,
             'theme_primary_dark': theme_primary_dark,
             'theme_on_primary': theme_on_primary,
+            'watermark_url': watermark_url,
         }
 
         # Générer le HTML du devis
